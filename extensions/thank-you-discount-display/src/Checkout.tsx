@@ -82,7 +82,7 @@ function Extension() {
       <Banner status="success">
         <InlineStack inlineAlignment={"center"}>
           <BlockStack>
-            <Text size="medium" emphasis="bold">
+            <Text size="medium" emphasis="bold" appearance="accent">
               {message}
             </Text>
             <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
