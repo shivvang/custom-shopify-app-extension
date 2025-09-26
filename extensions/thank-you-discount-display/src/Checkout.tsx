@@ -1,4 +1,4 @@
-import  {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import {
   reactExtension,
   Button,
@@ -11,21 +11,33 @@ import {
   useApi,
 } from "@shopify/ui-extensions-react/checkout";
 
-export default reactExtension("purchase.thank-you.block.render", () => <Extension />);
+export default reactExtension("purchase.thank-you.block.render", () => (
+  <Extension />
+));
+
+interface MetafieldResponse {
+  data: {
+    shop: {
+      codeMetafield?: { value: string | null };
+      messageMetafield?: { value: string | null };
+    };
+  };
+}
 
 function Extension() {
-  const [copied, setCopied] = useState(false);
-  const [discountCode,setDiscountCode] = useState("THANKYOU15")
-  const [message,setMessage] = useState("Special Discount Coupon For Sweet Dreams :")
-  const {query} = useApi();
+  const [copied, setCopied] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [discountCode, setDiscountCode] = useState<string>("THANKYOU15");
+  const [message, setMessage] = useState<string>(
+    "Special Discount Coupon For Sweet Dreams :"
+  );
+  const { query } = useApi();
 
-// thank_you_code
-// thank_you_message
-
-  useEffect(()=>{
-    async function fetchData() {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const result = await query(`{
+        const result = (await query(
+          `{
           shop {
             codeMetafield: metafield(namespace: "custom", key: "thank_you_code") {
               value
@@ -34,42 +46,60 @@ function Extension() {
               value
             }
           }
-        }`);
-        
-        // Update state with fetched data
-        if (result?.data.shop?.codeMetafield?.value) {
-          setDiscountCode(result.data.shop.codeMetafield.value);
-        }
-        if (result?.data.shop?.messageMetafield?.value) {
-          setMessage(result.data.shop.messageMetafield.value);
-        }
+        }`
+        )) as MetafieldResponse;
+
+        const code = result?.data?.shop?.codeMetafield?.value;
+        const msg = result?.data?.shop?.messageMetafield?.value;
+
+        if (code) setDiscountCode(code);
+        if (msg) setMessage(msg);
       } catch (error) {
         console.error("Error fetching metafields:", error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
     fetchData();
-  },[])
+  }, []);
   return (
-    <BlockStack spacing="base">
-
+    loading ? ( <Banner status="info">
+      <InlineStack inlineAlignment="center">
+        <BlockStack>
+          <Text size="medium" emphasis="bold">
+            Fetching your discount...
+          </Text>
+          <InlineStack inlineAlignment="center" blockAlignment="center">
+            <Text size="large" emphasis="bold">
+              Loading...
+            </Text>
+          </InlineStack>
+        </BlockStack>
+      </InlineStack>
+    </Banner>) : (
+      <BlockStack spacing="base">
       <Banner status="success">
-      <InlineStack inlineAlignment={"center"}>
+        <InlineStack inlineAlignment={"center"}>
           <BlockStack>
             <Text size="medium" emphasis="bold">
               {message}
             </Text>
-           <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
+            <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
               <Text size="large" emphasis="bold">
-                  {discountCode}
+                {discountCode}
               </Text>
-              <Button  activateTarget="discount-code" activateAction="copy" kind="secondary">
-                <Image source={"https://img.icons8.com/small/16/copy.png"}/> 
+              <Button
+                activateTarget="discount-code"
+                activateAction="copy"
+                kind="secondary"
+              >
+                <Image source={"https://img.icons8.com/small/16/copy.png"} />
               </Button>
-           </InlineStack>
+            </InlineStack>
           </BlockStack>
-      </InlineStack>
-    </Banner>
+        </InlineStack>
+      </Banner>
       <ClipboardItem
         id="discount-code"
         text={discountCode}
@@ -81,12 +111,12 @@ function Extension() {
           console.error("ClipboardItem copy failed");
         }}
       />
-
       {copied && (
         <Banner title="Copied!" status="success">
           Discount code copied to your clipboard.
         </Banner>
       )}
     </BlockStack>
+    )
   );
 }
