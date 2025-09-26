@@ -35,13 +35,13 @@ function Extension() {
             }
           }
         }`);
-            
+        
         // Update state with fetched data
-        if (result?.shop?.codeMetafield?.value) {
-          setDiscountCode(result.shop.codeMetafield.value);
+        if (result?.data.shop?.codeMetafield?.value) {
+          setDiscountCode(result.data.shop.codeMetafield.value);
         }
-        if (result?.shop?.messageMetafield?.value) {
-          setMessage(result.shop.messageMetafield.value);
+        if (result?.data.shop?.messageMetafield?.value) {
+          setMessage(result.data.shop.messageMetafield.value);
         }
       } catch (error) {
         console.error("Error fetching metafields:", error);
