@@ -25,7 +25,6 @@ interface MetafieldResponse {
 }
 
 function Extension() {
-  const [copied, setCopied] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [discountCode, setDiscountCode] = useState<string>("THANKYOU15");
   const [message, setMessage] = useState<string>(
@@ -72,7 +71,7 @@ function Extension() {
           </Text>
           <InlineStack inlineAlignment="center" blockAlignment="center">
             <Text size="large" emphasis="bold">
-              Loading...
+              ⏳ Loading...
             </Text>
           </InlineStack>
         </BlockStack>
@@ -82,7 +81,7 @@ function Extension() {
       <Banner status="success">
         <InlineStack inlineAlignment={"center"}>
           <BlockStack>
-            <Text size="medium" emphasis="bold" appearance="accent">
+            <Text size="medium" emphasis="bold">
               {message}
             </Text>
             <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
@@ -103,19 +102,7 @@ function Extension() {
       <ClipboardItem
         id="discount-code"
         text={discountCode}
-        onCopy={() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2500);
-        }}
-        onCopyError={() => {
-          console.error("ClipboardItem copy failed");
-        }}
       />
-      {copied && (
-        <Banner title="Copied!" status="success">
-          Discount code copied to your clipboard.
-        </Banner>
-      )}
     </BlockStack>
     )
   );
