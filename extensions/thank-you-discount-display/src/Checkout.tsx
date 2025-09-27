@@ -62,8 +62,8 @@ function Extension() {
 
     fetchData();
   }, []);
-  return (
-    loading ? ( <Banner status="info">
+  return loading ? (
+    <Banner status="info">
       <InlineStack inlineAlignment="center">
         <BlockStack>
           <Text size="medium" emphasis="bold">
@@ -76,34 +76,36 @@ function Extension() {
           </InlineStack>
         </BlockStack>
       </InlineStack>
-    </Banner>) : (
-      <BlockStack spacing="base">
-      <Banner status="success">
-        <InlineStack inlineAlignment={"center"}>
-          <BlockStack>
-            <Text size="medium" emphasis="bold">
+    </Banner>
+  ) : (
+    <BlockStack spacing="base">
+      <Banner status="success"> 
+          <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
+            <Text size="medium" emphasis="bold" appearance="accent">
               {message}
             </Text>
-            <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
+            <InlineStack
+              blockAlignment="center"
+              spacing="tight"
+              border="base"
+              borderRadius="large"
+              padding="tight"
+            >
               <Text size="large" emphasis="bold">
                 {discountCode}
               </Text>
+
               <Button
                 activateTarget="discount-code"
                 activateAction="copy"
                 kind="secondary"
               >
-                <Image source={"https://img.icons8.com/small/16/copy.png"} />
+                <Image source="https://img.icons8.com/small/16/copy.png" />
               </Button>
             </InlineStack>
-          </BlockStack>
-        </InlineStack>
+          </InlineStack>
       </Banner>
-      <ClipboardItem
-        id="discount-code"
-        text={discountCode}
-      />
+      <ClipboardItem id="discount-code" text={discountCode} />
     </BlockStack>
-    )
   );
 }
