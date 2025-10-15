@@ -10,7 +10,9 @@
     "generate": "shopify app generate",
     "deploy": "shopify app deploy"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@shopify/ui-extensions-react": "^2025.7.1"
+  },
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
