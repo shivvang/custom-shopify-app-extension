@@ -96,7 +96,7 @@ function Extension() {
       </View>
       <BlockStack inlineAlignment={"center"}>
           <BlockStack inlineAlignment={"center"}>
-          <Text size="large" emphasis="bold">Grab Your Gift!</Text>
+          <Text size="large" emphasis="bold">Grab Your Gift!</Text> 
           <Text size="medium" emphasis="bold">
             {message}
           </Text>
@@ -109,6 +109,7 @@ function Extension() {
               borderRadius="large"
               padding="tight"
             >
+              
               <Text size="medium" emphasis="bold">
                 {discountCode}
               </Text>
