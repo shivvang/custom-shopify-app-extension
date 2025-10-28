@@ -12,9 +12,10 @@ import {
   useApi,
 } from "@shopify/ui-extensions-react/checkout";
 
-export default reactExtension("purchase.thank-you.block.render", () => (
-  <Extension />
-));
+export default reactExtension(
+  "customer-account.order-status.block.render",
+  () => <Extension />
+);
 
 interface MetafieldResponse {
   data: {
@@ -26,14 +27,13 @@ interface MetafieldResponse {
   };
 }
 
-
 function Extension() {
   const [loading, setLoading] = useState<boolean>(true);
   const [discountCode, setDiscountCode] = useState<string>("THANKYOU15");
   const [message, setMessage] = useState<string>(
     "Special Discount Coupon For Sweet Dreams :"
   );
-  const [shopcta,setShopCta] = useState<string>("https://www.sweetdreams.in/"); 
+  const [shopcta, setShopCta] = useState<string>("https://www.sweetdreams.in/");
   const { query } = useApi();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function Extension() {
 
         if (code) setDiscountCode(code);
         if (msg) setMessage(msg);
-        if(cta) setShopCta(cta);
+        if (cta) setShopCta(cta);
       } catch (error) {
         console.error("Error fetching metafields:", error);
       } finally {
@@ -70,7 +70,7 @@ function Extension() {
 
     fetchData();
   }, []);
-  console.log("shop cta",shopcta);
+  console.log("shop cta", shopcta);
   return loading ? (
     <Banner status="info">
       <InlineStack inlineAlignment="center">
@@ -87,21 +87,29 @@ function Extension() {
       </InlineStack>
     </Banner>
   ) : (
-    <Banner  
-    status="success"
-    >
-    <InlineStack  spacing={"loose"} inlineAlignment={"center"} blockAlignment={"center"}> 
-      <View maxInlineSize={80} maxBlockSize={80}>
-       <Image source={"https://cdn-icons-png.freepik.com/256/1140/1140033.png?semt=ais_white_label"}/>
-      </View>
-      <BlockStack inlineAlignment={"center"}>
+    <Banner status="success">
+      <InlineStack
+        spacing={"loose"}
+        inlineAlignment={"center"}
+        blockAlignment={"center"}
+      >
+        <View maxInlineSize={80} maxBlockSize={80}>
+          <Image
+            source={
+              "https://cdn-icons-png.freepik.com/256/1140/1140033.png?semt=ais_white_label"
+            }
+          />
+        </View>
+        <BlockStack inlineAlignment={"center"}>
           <BlockStack inlineAlignment={"center"}>
-          <Text size="large" emphasis="bold">Grab Your Gift!</Text> 
-          <Text size="medium" emphasis="bold">
-            {message}
-          </Text>
+            <Text size="large" emphasis="bold">
+              Grab Your Gift!
+            </Text>
+            <Text size="medium" emphasis="bold">
+              {message}
+            </Text>
           </BlockStack>
-          <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>    
+          <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
             <InlineStack
               blockAlignment="center"
               spacing="tight"
@@ -109,7 +117,6 @@ function Extension() {
               borderRadius="large"
               padding="tight"
             >
-              
               <Text size="medium" emphasis="bold">
                 {discountCode}
               </Text>
@@ -123,17 +130,13 @@ function Extension() {
               </Button>
             </InlineStack>
 
-           
-            <Button
-            to={shopcta}
-            kind="primary"
-            appearance="monochrome"
-           >Shop Now</Button>
-           
+            <Button to={shopcta} kind="primary" appearance="monochrome">
+              Shop Now
+            </Button>
           </InlineStack>
-      </BlockStack>
-      <ClipboardItem id="discount-code" text={discountCode} />
-    </InlineStack>
+        </BlockStack>
+        <ClipboardItem id="discount-code" text={discountCode} />
+      </InlineStack>
     </Banner>
   );
 }
