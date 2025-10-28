@@ -24,6 +24,7 @@ interface MetafieldResponse {
       codeMetafield?: { value: string | null };
       messageMetafield?: { value: string | null };
       shopCtaMetafield?: { value: string | null };
+      tncMetafield?: { value: string | null };
     };
   };
 }
@@ -35,6 +36,9 @@ function Extension() {
     "Special Discount Coupon For Sweet Dreams :"
   );
   const [shopcta, setShopCta] = useState<string>("https://www.sweetdreams.in/");
+  const [tnc, setTnc] = useState<string>(
+    "Offer is applicable on Purchase Above 1999/-"
+  );
   const { query } = useApi();
 
   useEffect(() => {
@@ -51,6 +55,9 @@ function Extension() {
             } shopCtaMetafield: metafield(namespace: "custom", key: "thank_you_shopcta") {
               value
             }
+            tncMetafield: metafield(namespace: "custom", key: "thankyou_tnc") {
+              value
+            }
           }
         }`
         )) as MetafieldResponse;
@@ -58,10 +65,12 @@ function Extension() {
         const code = result?.data?.shop?.codeMetafield?.value;
         const msg = result?.data?.shop?.messageMetafield?.value;
         const cta = result?.data.shop?.shopCtaMetafield?.value;
+        const tnc = result?.data?.shop?.tncMetafield?.value;
 
         if (code) setDiscountCode(code);
         if (msg) setMessage(msg);
         if (cta) setShopCta(cta);
+        if (tnc) setTnc(tnc);
       } catch (error) {
         console.error("Error fetching metafields:", error);
       } finally {
@@ -108,6 +117,14 @@ function Extension() {
             </Text>
             <TextBlock size="medium" emphasis="bold" inlineAlignment="center">
               {message}
+            </TextBlock>
+            <TextBlock
+              size="base"
+              emphasis="bold"
+              inlineAlignment="center"
+              appearance="accent"
+            >
+              {tnc}
             </TextBlock>
           </BlockStack>
           <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
