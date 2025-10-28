@@ -9,6 +9,7 @@ import {
   InlineStack,
   Image,
   View,
+  TextBlock,
   useApi,
 } from "@shopify/ui-extensions-react/checkout";
 
@@ -105,9 +106,9 @@ function Extension() {
             <Text size="large" emphasis="bold">
               Grab Your Gift!
             </Text>
-            <Text size="medium" emphasis="bold">
+            <TextBlock size="medium" emphasis="bold" inlineAlignment="center">
               {message}
-            </Text>
+            </TextBlock>
           </BlockStack>
           <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
             <InlineStack
